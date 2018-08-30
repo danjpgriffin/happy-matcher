@@ -30,3 +30,5 @@ val mapper: ObjectMapper = ObjectMapper()
     .configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
     .configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
     .enable(SerializationFeature.INDENT_OUTPUT)
+
+fun City.distanceFrom(other: City) = DistanceCalculator.distance(this.lat, this.lon, other.lat, other.lon).toInt()

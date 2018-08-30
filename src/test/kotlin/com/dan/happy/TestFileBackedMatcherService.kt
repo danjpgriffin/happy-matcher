@@ -37,4 +37,14 @@ class TestFileBackedMatcherService {
         assertThat(matchesWithout.size, equalTo(13))
     }
 
+    @Test
+    fun `can filter by distance`() {
+        val unit = FileBackedMatchService("/matches.json")
+        //val matchesWith = unit.findMatches(must.within(10))
+
+        //SELECT id, ( 3959 * acos( cos( radians(37) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(-122) ) + sin( radians(37) ) * sin( radians( lat ) ) ) ) AS distance
+
+
+    }
+
 }
