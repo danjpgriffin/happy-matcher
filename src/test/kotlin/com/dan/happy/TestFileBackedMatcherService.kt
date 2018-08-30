@@ -19,8 +19,11 @@ class TestFileBackedMatcherService {
     fun `can filter by photo`() {
         val unit = FileBackedMatchService("/matches.json")
 
-        val matches = unit.findMatches(must.havePhoto())
-        assertThat(matches.size, equalTo(22))
+        val matchesWith = unit.findMatches(must.havePhoto())
+        assertThat(matchesWith.size, equalTo(22))
+
+        val matchesWithout = unit.findMatches(must.notHavePhoto())
+        assertThat(matchesWithout.size, equalTo(3))
     }
 
 }

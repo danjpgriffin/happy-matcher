@@ -13,8 +13,8 @@ class FileBackedMatchService(filename: String): MatchService {
 
     override fun findMatches(restrictions: Restrictions): List<Match> {
         val filtered =
-            if (restrictions.hasPhoto == true) {
-                allData.filter { it.main_photo != null }
+            if (restrictions.hasPhoto!= null) {
+                allData.filter { if (restrictions.hasPhoto) it.main_photo != null else it.main_photo == null }
             } else {
                 allData
             }

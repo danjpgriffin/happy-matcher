@@ -6,7 +6,6 @@ import org.http4k.core.Response
 import org.http4k.core.Status
 import org.http4k.format.ConfigurableJackson
 import com.dan.happy.PPJackson.auto
-import com.sun.org.apache.xpath.internal.operations.Bool
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.server.Jetty

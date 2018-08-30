@@ -44,11 +44,20 @@ class TestWebMicroserviceAcceptance {
     }
 
     @Test
-    fun `marshalls hasPhoto parameter to find service`() {
+    fun `marshalls hasPhoto=true parameter to find service`() {
         client(Request(Method.GET, "http://localhost:9090/findmatches?hasPhoto=true"))
         assertThat(matcherService.restrictedWith, equalTo(
             Restrictions(
             hasPhoto = true)
+        ))
+    }
+
+    @Test
+    fun `marshalls hasPhoto=false parameter to find service`() {
+        client(Request(Method.GET, "http://localhost:9090/findmatches?hasPhoto=false"))
+        assertThat(matcherService.restrictedWith, equalTo(
+            Restrictions(
+                hasPhoto = false)
         ))
     }
 
