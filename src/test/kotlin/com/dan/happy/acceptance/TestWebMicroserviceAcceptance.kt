@@ -79,6 +79,15 @@ class TestWebMicroserviceAcceptance {
         ))
     }
 
+    @Test
+    fun `marshalls distance parameter to find service`() {
+        client(Request(Method.GET, "http://localhost:9090/findmatches?distance=102"))
+        assertThat(matcherService.restrictedWith, equalTo(
+            Restrictions(
+                distance = 102)
+        ))
+    }
+
     class DummyMatchService : MatchService {
         lateinit var restrictedWith: Restrictions
         override fun findMatches(restrictions: Restrictions, originCity: City?): List<Match> {

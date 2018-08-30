@@ -1,7 +1,7 @@
 package com.dan.happy
 
 interface MatchService {
-    fun findMatches(restrictions: Restrictions = must, originCity: City? = null): List<Match>
+    fun findMatches(restrictions: Restrictions = must, originCity: City?): List<Match>
 }
 
 val must = Restrictions()

@@ -11,7 +11,7 @@ class TestFileBackedMatcherService {
     fun `can return unrestricted set of data`() {
         val unit = FileBackedMatchService("/matches.json")
 
-        val matches = unit.findMatches()
+        val matches = unit.findMatches(originCity = null)
         assertThat(matches.size, equalTo(25))
     }
 
@@ -19,10 +19,10 @@ class TestFileBackedMatcherService {
     fun `can filter by photo`() {
         val unit = FileBackedMatchService("/matches.json")
 
-        val matchesWith = unit.findMatches(must.havePhoto())
+        val matchesWith = unit.findMatches(must.havePhoto(), originCity = null)
         assertThat(matchesWith.size, equalTo(22))
 
-        val matchesWithout = unit.findMatches(must.notHavePhoto())
+        val matchesWithout = unit.findMatches(must.notHavePhoto(), originCity = null)
         assertThat(matchesWithout.size, equalTo(3))
     }
 
@@ -30,10 +30,10 @@ class TestFileBackedMatcherService {
     fun `can filter by in contact`() {
         val unit = FileBackedMatchService("/matches.json")
 
-        val matchesWith = unit.findMatches(must.beInContact())
+        val matchesWith = unit.findMatches(must.beInContact(), originCity = null)
         assertThat(matchesWith.size, equalTo(12))
 
-        val matchesWithout = unit.findMatches(must.notBeInContact())
+        val matchesWithout = unit.findMatches(must.notBeInContact(), originCity = null)
         assertThat(matchesWithout.size, equalTo(13))
     }
 
