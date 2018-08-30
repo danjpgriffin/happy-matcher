@@ -1,27 +1,21 @@
 package com.dan.happy.acceptance
 
-import com.dan.happy.makeServer
+import com.dan.happy.WebServer
 import com.oneeyedmen.okeydoke.junit.ApprovalsRule
 import org.http4k.client.ApacheClient
 import org.http4k.core.Method
 import org.http4k.core.Request
-import org.http4k.core.Response
-import org.http4k.core.Status
-import org.http4k.server.Jetty
-import org.http4k.server.asServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.BufferedReader
-
 
 class TestWebMicroservice {
 
     private val port = 9090
     private val client = ApacheClient()
 
-    val server = makeServer(port)
+    val server = WebServer.create(port)
 
     @Rule
     @JvmField
