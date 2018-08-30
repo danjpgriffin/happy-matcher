@@ -6,13 +6,19 @@ import org.http4k.core.Response
 import org.http4k.core.Status
 import java.io.BufferedReader
 
-class FileBackedMatchService: MatchService {
+class FileBackedMatchService(filename: String): MatchService {
 
-    private val lens = Body.auto<MatchResult>().toLens()
+    private val json = Any().javaClass.getResourceAsStream(filename).bufferedReader().use(BufferedReader::readText)
+    private val allData = Body.auto<MatchResult>().toLens().extract(Response(Status.OK).body(json)).matches
 
-    override fun findMatches(): List<Match> {
-        val data = Any().javaClass.getResourceAsStream("/matches.json").bufferedReader().use(BufferedReader::readText)
-        return lens.extract(Response(Status.OK).body(data)).matches
+    override fun findMatches(restrictions: Restrictions): List<Match> {
+        val filtered =
+            if (restrictions.hasPhoto == true) {
+                allData.filter { it.main_photo != null }
+            } else {
+                allData
+            }
+        return filtered
     }
 
 }

@@ -1,5 +1,11 @@
 package com.dan.happy
 
 interface MatchService {
-    fun findMatches(): List<Match>
+    fun findMatches(restrictions: Restrictions = must): List<Match>
+}
+
+val must = Restrictions()
+
+data class Restrictions(val hasPhoto: Boolean? = null) {
+    fun havePhoto() = copy(hasPhoto = true)
 }

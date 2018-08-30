@@ -3,22 +3,25 @@ package com.dan.happy.acceptance
 import com.dan.happy.City
 import com.dan.happy.Match
 import com.dan.happy.MatchService
+import com.dan.happy.Restrictions
 import com.dan.happy.WebServer
 import com.oneeyedmen.okeydoke.junit.ApprovalsRule
+import org.hamcrest.CoreMatchers.equalTo
 import org.http4k.client.ApacheClient
 import org.http4k.core.Method
 import org.http4k.core.Request
 import org.junit.After
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class TestWebMicroservice {
+class TestWebMicroserviceAcceptance {
 
     private val port = 9090
     private val client = ApacheClient()
-
-    val server = WebServer(DummyMatchService()).create(port)
+    private val matcherService = DummyMatchService()
+    val server = WebServer(matcherService).create(port)
 
     @Rule
     @JvmField
@@ -37,10 +40,22 @@ class TestWebMicroservice {
     @Test
     fun `can get list of matches from webservice`() {
         approval.assertApproved(client(Request(Method.GET, "http://localhost:9090/findmatches")).bodyString())
+        assertThat(matcherService.restrictedWith, equalTo(Restrictions()))
+    }
+
+    @Test
+    fun `marshalls hasPhoto parameter to find service`() {
+        client(Request(Method.GET, "http://localhost:9090/findmatches?hasPhoto=true"))
+        assertThat(matcherService.restrictedWith, equalTo(
+            Restrictions(
+            hasPhoto = true)
+        ))
     }
 
     class DummyMatchService : MatchService {
-        override fun findMatches(): List<Match> {
+        lateinit var restrictedWith: Restrictions
+        override fun findMatches(restrictions: Restrictions): List<Match> {
+            restrictedWith = restrictions
             return listOf(
                 Match(
                     "Caroline",
