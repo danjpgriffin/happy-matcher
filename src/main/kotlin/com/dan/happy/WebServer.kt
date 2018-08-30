@@ -19,6 +19,7 @@ object PPJackson: ConfigurableJackson(mapper)
 class WebServer(val matchService: MatchService) {
 
     private val hasPhoto = Query.boolean().optional("hasPhoto")
+    private val inContact = Query.boolean().optional("inContact")
     private val lens = Body.auto<MatchResult>().toLens()
 
     fun create(port: Int) = routes(
@@ -27,7 +28,8 @@ class WebServer(val matchService: MatchService) {
 
     private fun runMatches(request: Request): Response {
         return matchService.findMatches(Restrictions(
-            hasPhoto = hasPhoto(request)
+            hasPhoto = hasPhoto(request),
+            inContact = inContact(request)
         )).let { matches ->
             lens.inject(MatchResult(matches), Response(Status.OK).header("Content-type", "application/json"))
         }

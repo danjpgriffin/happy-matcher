@@ -61,6 +61,24 @@ class TestWebMicroserviceAcceptance {
         ))
     }
 
+    @Test
+    fun `marshalls inContact=true parameter to find service`() {
+        client(Request(Method.GET, "http://localhost:9090/findmatches?inContact=true"))
+        assertThat(matcherService.restrictedWith, equalTo(
+            Restrictions(
+                inContact = true)
+        ))
+    }
+
+    @Test
+    fun `marshalls inContact=false parameter to find service`() {
+        client(Request(Method.GET, "http://localhost:9090/findmatches?inContact=false"))
+        assertThat(matcherService.restrictedWith, equalTo(
+            Restrictions(
+                inContact = false)
+        ))
+    }
+
     class DummyMatchService : MatchService {
         lateinit var restrictedWith: Restrictions
         override fun findMatches(restrictions: Restrictions): List<Match> {

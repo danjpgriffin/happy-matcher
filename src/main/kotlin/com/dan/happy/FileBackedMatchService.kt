@@ -12,13 +12,19 @@ class FileBackedMatchService(filename: String): MatchService {
     private val allData = Body.auto<MatchResult>().toLens().extract(Response(Status.OK).body(json)).matches
 
     override fun findMatches(restrictions: Restrictions): List<Match> {
-        val filtered =
-            if (restrictions.hasPhoto!= null) {
-                allData.filter { if (restrictions.hasPhoto) it.main_photo != null else it.main_photo == null }
-            } else {
-                allData
-            }
-        return filtered
+
+        fun Match.photoRestriction(): Boolean = restrictions.hasPhoto?.let {
+           if (it) this.main_photo != null else this.main_photo == null
+        } ?: true
+
+        fun Match.contactRestriction(): Boolean = restrictions.inContact?.let {
+            if (it) this.contacts_exchanged > 0 else this.contacts_exchanged == 0
+        } ?: true
+
+        return allData.filter {
+            it.photoRestriction() && it.contactRestriction()
+        }
+
     }
 
 }

@@ -6,7 +6,12 @@ interface MatchService {
 
 val must = Restrictions()
 
-data class Restrictions(val hasPhoto: Boolean? = null) {
+data class Restrictions(
+    val hasPhoto: Boolean? = null,
+    val inContact: Boolean? = null
+) {
     fun havePhoto() = copy(hasPhoto = true)
     fun notHavePhoto() = copy(hasPhoto = false)
+    fun beInContact() = copy(inContact = true)
+    fun notBeInContact() = copy(inContact = false)
 }

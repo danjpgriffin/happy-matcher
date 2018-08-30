@@ -26,4 +26,15 @@ class TestFileBackedMatcherService {
         assertThat(matchesWithout.size, equalTo(3))
     }
 
+    @Test
+    fun `can filter by in contact`() {
+        val unit = FileBackedMatchService("/matches.json")
+
+        val matchesWith = unit.findMatches(must.beInContact())
+        assertThat(matchesWith.size, equalTo(12))
+
+        val matchesWithout = unit.findMatches(must.notBeInContact())
+        assertThat(matchesWithout.size, equalTo(13))
+    }
+
 }
