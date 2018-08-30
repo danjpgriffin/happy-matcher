@@ -1,5 +1,7 @@
 package com.dan.happy.acceptance
 
+import com.dan.happy.City
+import com.dan.happy.Match
 import com.dan.happy.MatchService
 import com.dan.happy.WebServer
 import com.oneeyedmen.okeydoke.junit.ApprovalsRule
@@ -16,7 +18,7 @@ class TestWebMicroservice {
     private val port = 9090
     private val client = ApacheClient()
 
-    val server = WebServer(MatchService()).create(port)
+    val server = WebServer(DummyMatchService()).create(port)
 
     @Rule
     @JvmField
@@ -35,6 +37,38 @@ class TestWebMicroservice {
     @Test
     fun `can get list of matches from webservice`() {
         approval.assertApproved(client(Request(Method.GET, "http://localhost:9090/findmatches")).bodyString())
+    }
+
+    class DummyMatchService : MatchService {
+        override fun findMatches(): List<Match> {
+            return listOf(
+                Match(
+                    "Caroline",
+                    41,
+                    "Corporate Lawyer",
+                    153,
+                    City("Leeds", 53.801277, -1.548567),
+                    "http://thecatapi.com/api/images/get?format=src&type=gif",
+                    0.76,
+                    2,
+                    true,
+                    "Atheist"
+                ),
+                Match(
+                    "Natalia",
+                    38,
+                    "Project Manager",
+                    144,
+                    City("Cardiff", 51.481583, -3.17909),
+                    "http://thecatapi.com/api/images/get?format=src&type=gif",
+                    0.47,
+                    5,
+                    false,
+                    "Christian"
+                    )
+                )
+        }
+
     }
 
 }
