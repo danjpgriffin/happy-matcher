@@ -8,6 +8,7 @@ import org.http4k.core.Response
 import org.http4k.core.Status
 import org.http4k.format.ConfigurableJackson
 import com.dan.happy.PPJackson.auto
+import com.fasterxml.jackson.annotation.JsonInclude
 import org.http4k.format.defaultKotlinModuleWithHttp4kSerialisers
 import org.http4k.routing.bind
 import org.http4k.routing.routes
@@ -18,9 +19,19 @@ import com.fasterxml.jackson.databind.DeserializationFeature.*
 import com.fasterxml.jackson.databind.SerializationFeature
 
 data class MatchResult(val matches: List<Match>)
+data class City(val name: String, val lat: Double, val lon: Double)
 data class Match(
     val display_name: String,
-    val age: Int
+    val age: Int,
+    val job_title: String,
+    val height_in_cm: Int,
+    val city: City,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    val main_photo: String?,
+    val compatibility_score: Double,
+    val contacts_exchanged: Int,
+    val favourite: Boolean,
+    val religion: String
 )
 
 
