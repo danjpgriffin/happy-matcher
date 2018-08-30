@@ -81,7 +81,7 @@ class TestWebMicroserviceAcceptance {
 
     class DummyMatchService : MatchService {
         lateinit var restrictedWith: Restrictions
-        override fun findMatches(restrictions: Restrictions): List<Match> {
+        override fun findMatches(restrictions: Restrictions, originCity: City?): List<Match> {
             restrictedWith = restrictions
             return listOf(
                 Match(

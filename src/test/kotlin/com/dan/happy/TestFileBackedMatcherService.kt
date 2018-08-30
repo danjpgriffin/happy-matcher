@@ -40,10 +40,12 @@ class TestFileBackedMatcherService {
     @Test
     fun `can filter by distance`() {
         val unit = FileBackedMatchService("/matches.json")
-        //val matchesWith = unit.findMatches(must.within(10))
-
-        //SELECT id, ( 3959 * acos( cos( radians(37) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(-122) ) + sin( radians(37) ) * sin( radians( lat ) ) ) ) AS distance
-
+        val usersCity = City("Birmingham", 52.489471, -1.898575)
+        val matches = unit.findMatches(must.within(100), usersCity)
+        assertThat(matches.size, equalTo(2))
+        assertThat(matches.map { it.city.name }.toSet(), equalTo(
+            setOf("Solihull", "Oxford")
+        ))
 
     }
 

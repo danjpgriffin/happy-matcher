@@ -11,7 +11,7 @@ class FileBackedMatchService(filename: String): MatchService {
     private val json = Any().javaClass.getResourceAsStream(filename).bufferedReader().use(BufferedReader::readText)
     private val allData = Body.auto<MatchResult>().toLens().extract(Response(Status.OK).body(json)).matches
 
-    override fun findMatches(restrictions: Restrictions): List<Match> {
+    override fun findMatches(restrictions: Restrictions, originCity: City?): List<Match> {
 
         fun Match.photoRestriction(): Boolean = restrictions.hasPhoto?.let {
            if (it) this.main_photo != null else this.main_photo == null
@@ -21,8 +21,14 @@ class FileBackedMatchService(filename: String): MatchService {
             if (it) this.contacts_exchanged > 0 else this.contacts_exchanged == 0
         } ?: true
 
+        fun Match.distanceRestriction(): Boolean = restrictions.distance?.let {
+            if (originCity != null) {
+                this.city.distanceFrom(originCity) <= it
+            } else true
+        } ?: true
+
         return allData.filter {
-            it.photoRestriction() && it.contactRestriction()
+            it.photoRestriction() && it.contactRestriction() && it.distanceRestriction()
         }
 
     }
