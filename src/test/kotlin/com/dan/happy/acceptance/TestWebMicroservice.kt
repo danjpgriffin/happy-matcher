@@ -1,5 +1,6 @@
 package com.dan.happy.acceptance
 
+import com.dan.happy.MatchService
 import com.dan.happy.WebServer
 import com.oneeyedmen.okeydoke.junit.ApprovalsRule
 import org.http4k.client.ApacheClient
@@ -15,7 +16,7 @@ class TestWebMicroservice {
     private val port = 9090
     private val client = ApacheClient()
 
-    val server = WebServer.create(port)
+    val server = WebServer(MatchService()).create(port)
 
     @Rule
     @JvmField
