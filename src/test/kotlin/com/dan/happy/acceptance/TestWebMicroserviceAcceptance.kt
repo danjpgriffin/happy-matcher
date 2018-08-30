@@ -1,6 +1,7 @@
 package com.dan.happy.acceptance
 
 import com.dan.happy.City
+import com.dan.happy.DemoUserService
 import com.dan.happy.Match
 import com.dan.happy.MatchService
 import com.dan.happy.Restrictions
@@ -21,7 +22,8 @@ class TestWebMicroserviceAcceptance {
     private val port = 9090
     private val client = ApacheClient()
     private val matcherService = DummyMatchService()
-    val server = WebServer(matcherService).create(port)
+    private val userService = DemoUserService()
+    val server = WebServer(matcherService, userService).create(port)
 
     @Rule
     @JvmField

@@ -17,14 +17,12 @@ import org.http4k.lens.int
 
 object PPJackson: ConfigurableJackson(mapper)
 
-class WebServer(val matchService: MatchService) {
+class WebServer(val matchService: MatchService, val userService: UserService) {
 
     private val hasPhoto = Query.boolean().optional("hasPhoto")
     private val inContact = Query.boolean().optional("inContact")
     private val distance = Query.int().optional("distance")
     private val lens = Body.auto<MatchResult>().toLens()
-
-    private val usersCity = City("Birmingham", 52.489471, -1.898575)
 
     fun create(port: Int) = routes(
         "/findmatches" bind Method.GET to ::runMatches
@@ -35,7 +33,7 @@ class WebServer(val matchService: MatchService) {
             hasPhoto = hasPhoto(request),
             inContact = inContact(request),
             distance = distance(request)
-        ), usersCity).let { matches ->
+        ), userService.getCityForCurrentUser()).let { matches ->
             lens.inject(MatchResult(matches), Response(Status.OK).header("Content-type", "application/json"))
         }
     }
