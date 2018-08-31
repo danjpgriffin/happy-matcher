@@ -1,6 +1,6 @@
-#Coding Exercise (Filtering)
+# Coding Exercise (Filtering)
 
-##Requirements
+## Requirements
 * JVM capable of running Kotlin
 * docker
 * running mysql image
@@ -15,19 +15,19 @@ It can take a while for the mysql instance to start. please wait until you can s
 
 .. in the message log on screen
 
-##Building
+## Building
 
 You may build the project using:
 
 `./gradlew clean build`
 
-##Running
+## Running
 
 The application can be started by running:
 
 `java -jar build/libs/happy-matcher.jar`
 
-##Supported features
+## Supported features
 Only hasPhoto, inContact and distance are supported at this time
 The user is assumed to be in Birmingham
 
