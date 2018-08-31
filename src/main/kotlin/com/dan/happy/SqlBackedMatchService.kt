@@ -25,7 +25,7 @@ class SqlBackedMatchService: MatchService {
                     }
                 }
             }
-        }
+        }.filterAllBy(restrictions, originCity)
     }
 
     private fun ResultSet.map(fn: (ResultSet) -> Match): List<Match> {

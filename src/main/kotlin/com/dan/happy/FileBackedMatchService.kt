@@ -12,25 +12,27 @@ class FileBackedMatchService(filename: String): MatchService {
     private val allData = Body.auto<MatchResult>().toLens().extract(Response(Status.OK).body(json)).matches
 
     override fun findMatches(restrictions: Restrictions, originCity: City?): List<Match> {
-
-        fun Match.photoRestriction(): Boolean = restrictions.hasPhoto?.let {
-           if (it) this.main_photo != null else this.main_photo == null
-        } ?: true
-
-        fun Match.contactRestriction(): Boolean = restrictions.inContact?.let {
-            if (it) this.contacts_exchanged > 0 else this.contacts_exchanged == 0
-        } ?: true
-
-        fun Match.distanceRestriction(): Boolean = restrictions.distance?.let {
-            if (originCity != null) {
-                this.city.distanceFrom(originCity) <= it
-            } else true
-        } ?: true
-
-        return allData.filter {
-            it.photoRestriction() && it.contactRestriction() && it.distanceRestriction()
-        }
-
+        return allData.filterAllBy(restrictions, originCity)
     }
+}
 
+fun List<Match>.filterAllBy(restrictions: Restrictions, originCity: City?): List<Match> {
+
+    fun Match.photoRestriction(): Boolean = restrictions.hasPhoto?.let {
+        if (it) this.main_photo != null else this.main_photo == null
+    } ?: true
+
+    fun Match.contactRestriction(): Boolean = restrictions.inContact?.let {
+        if (it) this.contacts_exchanged > 0 else this.contacts_exchanged == 0
+    } ?: true
+
+    fun Match.distanceRestriction(): Boolean = restrictions.distance?.let {
+        if (originCity != null) {
+            this.city.distanceFrom(originCity) <= it
+        } else true
+    } ?: true
+
+    return this.filter {
+        it.photoRestriction() && it.contactRestriction() && it.distanceRestriction()
+    }
 }
