@@ -26,3 +26,17 @@ You may build the project using:
 The application can be started by running:
 
 `java -jar build/libs/happy-matcher.jar`
+
+##Supported features
+Only hasPhoto, inContact and distance are supported at this time
+The user is assumed to be in Birmingham
+
+The application runs on port 9090. Here are some example calls:
+
+`http://localhost:9090/findmatches`
+
+`http://localhost:9090/findmatches?inContact=true`
+
+`http://localhost:9090/findmatches?hasPhoto=false`
+
+`http://localhost:9090/findmatches?distance=100`
