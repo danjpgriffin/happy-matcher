@@ -12,7 +12,7 @@ class SqlBackedMatchService: MatchService {
                     rs.map {
                         Match(
                             display_name = rs.getString("display_name"),
-                            age = -1,
+                            age = rs.getInt("age"),
                             job_title = rs.getString("job_title"),
                             height_in_cm = rs.getInt("height_in_cm"),
                             city = City(rs.getString("city_name"), rs.getDouble("lat"), rs.getDouble("lon")),
