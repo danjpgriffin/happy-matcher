@@ -30,3 +30,16 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.dan.happy.MainAppKt'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    archiveName 'happy-matcher.jar'
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
